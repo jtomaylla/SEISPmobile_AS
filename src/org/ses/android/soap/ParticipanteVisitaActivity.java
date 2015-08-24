@@ -44,10 +44,12 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import static android.view.View.*;
+
 public class ParticipanteVisitaActivity extends Activity {
 	
 	private EditText edt_nombres;
-	private Spinner spnLocal;
+	//private Spinner spnLocal;
 	private Spinner spnProyecto;
 	private Spinner spnGrupo;
 	private Spinner spnVisita;
@@ -56,7 +58,7 @@ public class ParticipanteVisitaActivity extends Activity {
 	
 //	private TextView tvDisplayDate;
 //	private EditText edt_hora_visita;
-//	private Button btnChangeDate;
+	private TextView tvwLocalName;
 	private TextView tvwfecha_visita;
 	private TextView tvwhora_visita;	
 	private int year;
@@ -111,35 +113,48 @@ public class ParticipanteVisitaActivity extends Activity {
 		edt_nombres.setText(nombres);
 		
         btgNavega = (GrupoBotones)findViewById(R.id.btgNavega);
-		spnLocal = (Spinner) findViewById(R.id.spnLocal);
+		//spnLocal = (Spinner) findViewById(R.id.spnLocal);
+        tvwLocalName = (TextView) findViewById(R.id.tvwLocalName);
 		spnProyecto = (Spinner) findViewById(R.id.spnProyecto);
 		spnGrupo = (Spinner) findViewById(R.id.spnGrupo);
 		spnVisita = (Spinner) findViewById(R.id.spnVisita);
 		
-		loadLocalSpinner();
-
-		spnLocal.setOnItemSelectedListener(
-				new AdapterView.OnItemSelectedListener() {
-				@Override
-				public void onItemSelected(AdapterView<?> parent,
-				android.view.View v, int position, long id) {
-					selLocal = Integer.toString(position);
-                    codigousuario = mPreferences.getString(PreferencesActivity.KEY_USERID, "");
-                    Log.i("Visita","Seleccionado(1): pos: "+ selLocal + " valor:" + parent.getItemAtPosition(position));
-                    if ( selLocal != null) {
-                        if (!selLocal.equals("0")) loadProyectoSpinner(selLocal,codigousuario);
-                    }
-
-					Log.i("Visita","Seleccionado(2): pos: "+ selLocal + " valor:" + parent.getItemAtPosition(position));
-                    Log.i("Visita"," valor:" + selLocal);
-				}
-				@Override
-				public void onNothingSelected(AdapterView<?> parent) {
-					Toast.makeText(getBaseContext(), "Seleccione un Local!!",Toast.LENGTH_SHORT).show();
-				}
-		});
-
-		spnProyecto.setOnItemSelectedListener(
+//		loadLocalSpinner();
+//        spnLocal.setVisibility(INVISIBLE);
+//		spnLocal.setOnItemSelectedListener(
+//				new AdapterView.OnItemSelectedListener() {
+//				@Override
+//				public void onItemSelected(AdapterView<?> parent,
+//				android.view.View v, int position, long id) {
+//					//selLocal = Integer.toString(position);
+//                    String local_id = mPreferences.getString(PreferencesActivity.KEY_LOCAL_ID, "");
+//                    int intLocal = Integer.valueOf(local_id);
+//                    selLocal = Integer.toString(intLocal);
+//                    codigousuario = mPreferences.getString(PreferencesActivity.KEY_USERID, "");
+//                    Log.i("Visita","Seleccionado(1): pos: "+ selLocal + " valor:" + parent.getItemAtPosition(position));
+//                    if ( selLocal != null) {
+//                        if (!selLocal.equals("0")) loadProyectoSpinner(selLocal,codigousuario);
+//                    }
+//
+//                    //loadProyectoSpinner(selLocal,codigousuario);
+//					Log.i("Visita","Seleccionado(2): pos: "+ selLocal + " valor:" + parent.getItemAtPosition(position));
+//                    Log.i("Visita"," valor:" + selLocal);
+//				}
+//				@Override
+//				public void onNothingSelected(AdapterView<?> parent) {
+//					Toast.makeText(getBaseContext(), "Seleccione un Local!!",Toast.LENGTH_SHORT).show();
+//				}
+//		});
+        //JT
+        String local_name = mPreferences.getString(PreferencesActivity.KEY_LOCAL_NAME, "");
+        tvwLocalName.setText(local_name);
+        String local_id = mPreferences.getString(PreferencesActivity.KEY_LOCAL_ID, "");
+        int intLocal = Integer.valueOf(local_id);
+        selLocal = Integer.toString(intLocal);
+        codigousuario = mPreferences.getString(PreferencesActivity.KEY_USERID, "");
+        loadProyectoSpinner(selLocal,codigousuario);
+		//
+        spnProyecto.setOnItemSelectedListener(
 				new AdapterView.OnItemSelectedListener() {
 				@Override
 				public void onItemSelected(AdapterView<?> parent,
@@ -525,6 +540,7 @@ public class ParticipanteVisitaActivity extends Activity {
 		});
  
 	}
+/*
 	public void loadLocalSpinner(){
 			LocalLoadTask tareaLocal = new LocalLoadTask();
 			
@@ -534,16 +550,28 @@ public class ParticipanteVisitaActivity extends Activity {
 			try {
 
 				objLocal = loadLocal.get();
-				wee = new String[objLocal.length];
-				
-			     for(int i = 0;i < objLocal.length; i++){
-			         wee[i]= objLocal[i].nombre;
-			     }
+				//wee = new String[objLocal.length];
+				// JT 21/08/2015
+                wee = new String[2];
+                String local_id = mPreferences.getString(PreferencesActivity.KEY_LOCAL_ID, "");
+                int intLocal = Integer.valueOf(local_id);
+                //wee[intLocal]= objLocal[intLocal].nombre;
+                //
+//			    for(int i = 0;i < objLocal.length; i++){
+//                    wee[i]= objLocal[i].nombre;
+//			    }
+                int k = 0;
+                for(int i = 0;i < objLocal.length; i++){
+                    if (i == intLocal || i == 0){
+                        wee[i]= objLocal[i].nombre;
+                        k++;
+                    }
+			    }
 			     ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
 			             this, android.R.layout.simple_spinner_item, wee);
 			    spinnerArrayAdapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
-			    spnLocal.setAdapter(spinnerArrayAdapter);	
-			     
+			    spnLocal.setAdapter(spinnerArrayAdapter);
+
 				Log.i("Visita","Local Array");
 				
 			} catch (InterruptedException e1) {
@@ -555,6 +583,7 @@ public class ParticipanteVisitaActivity extends Activity {
 			}
 
 	}
+*/
 	public void loadProyectoSpinner(String local,String codigousuario){
 		ProyectoLoadTask tareaProyecto = new ProyectoLoadTask();
 		

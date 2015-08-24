@@ -51,7 +51,7 @@ public class MainActivity extends Activity {
     //
 	private String response;
 	private static Context context;
-	private String selLocal,mAlertMsg;
+	private String selLocal,mAlertMsg,selLocalName;
 	private Boolean connected;
     //jt
     private String selProyecto  = "";
@@ -116,6 +116,8 @@ public class MainActivity extends Activity {
 				public void onItemSelected(AdapterView<?> parent,
 				android.view.View v, int position, long id) {
 					selLocal = Integer.toString(position);
+                    selLocalName = parent.getItemAtPosition(position).toString();
+
 //					if (selLocal.equals("0")) loadLocalSpinner();
                     Log.i("MainActivity","Seleccionado(1): pos: "+ selLocal + " valor:" + parent.getItemAtPosition(position));
                     //jt
@@ -176,6 +178,7 @@ public class MainActivity extends Activity {
 				    editor.putString(PreferencesActivity.KEY_PASSWORD, password);
 				    editor.putString(PreferencesActivity.KEY_USERID, String.valueOf(login.CodigoUsuario));
 				    editor.putString(PreferencesActivity.KEY_LOCAL_ID, selLocal);
+                    editor.putString(PreferencesActivity.KEY_LOCAL_NAME, selLocalName);
 //				    editor.commit();
 
 
